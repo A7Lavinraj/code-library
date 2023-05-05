@@ -5,13 +5,15 @@ using namespace std;
 template <typename T> class difference_array {
   public: 
     vector<int> diff_array;
-    difference_array(int array_size) {
-      diff_array = vector<int> (array_size + 1, 0);
+    int shift = 0;
+    difference_array(int array_size, int shift = 0) {
+      diff_array = vector<int> (array_size + 1 + shift, 0);
+      this -> shift = shift;
     }
 
     void change(int from, int to, int value) {
-      diff_array[from] += value;
-      diff_array[to + 1] -= value;
+      diff_array[from + shift] += value;
+      diff_array[to + 1 + shift] -= value;
     }
 
     vector<int> get() {
@@ -31,8 +33,8 @@ template <typename T = int> void vector_out(vector<T> output) {
 }
 
 int main() {
-  difference_array<int> arr(5);
-  arr.change(1, 4, 2);
+  difference_array<int> arr(5, 1);
+  arr.change(-1, 1, 2);
   vector_out(arr.get());
   return 0;
 }

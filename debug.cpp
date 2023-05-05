@@ -23,7 +23,7 @@ template<typename Q> void debug(queue<Q> que) { while(!que.empty()) { cerr << qu
 template<typename DQ> void debug(deque<DQ> dque) { while(!dque.empty()) { cerr << dque.front() << " "; dque.pop_front(); }}
 void dbg() {cerr << "]\n";}template <typename T, typename... V>void dbg(T t, V... v) {debug(t); if (sizeof...(v)) cerr << ", "; dbg(v...);}
 
-#ifdef RECB
+#ifdef DEBUG
 #define dbg(x...) cerr << "\e[91m"<<__func__<<":"<<__LINE__<<" [" << #x << "] = ["; dbg(x); cerr << "\e[39m" << endl;
 #else
 #define dbg(x...) 32
