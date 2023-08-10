@@ -3,7 +3,7 @@
 #define sz(x) (int)x.size()
 #define all(x) x.begin(), x.end()
 
-#define LOOP(i, low, high, shift) for (int i = low; (low < high > 0 ? i <= high : i >= high); (low < high ? i += shift : i -= shift))
+#define LOOP(i, low, high, shift) for (int i = low; (low < high ? i < high : i >= high); (low < high ? i += shift : i -= shift))
 #define LOOP1(high) LOOP(i, 0, high, 1)
 #define LOOP2(i, high) LOOP(i, 0, high, 1)
 #define LOOP3(i, low, high) LOOP(i, low, high, 1)
