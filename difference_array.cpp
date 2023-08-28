@@ -2,22 +2,21 @@
 #include <vector>
 using namespace std;
 
-template <typename T> class difference_array {
-  public: 
-    vector<int> diff_array;
-    difference_array(int array_size) {
-      diff_array = vector<int> (array_size + 1, 0);
-    }
+template <typename T> struct difference_array {
+  vector<int> diff_array;
+  difference_array(int array_size) {
+    diff_array = vector<int> (array_size + 1, 0);
+  }
 
-    void change(int from, int to, int value) {
-      diff_array[from] += value;
-      diff_array[to + 1] -= value;
-    }
+  void change(int from, int to, int value) {
+    diff_array[from] += value;
+    diff_array[to + 1] -= value;
+  }
 
-    vector<int> get_array() {
-      diff_array.pop_back();
-      return diff_array;
-    }
+  vector<int> get_array() {
+    diff_array.pop_back();
+    return diff_array;
+  }
 };
 
 template<typename T = int> vector<T> prefix(vector<T> normal_array, bool zero = false) {
