@@ -24,7 +24,7 @@ template<typename T> void debug(deque<T> dque) { while(!dque.empty()) { cerr << 
 void dbg() {cerr << "]\n";}template <typename T, typename... V>void dbg(T t, V... v) {debug(t); if (sizeof...(v)) cerr << ", "; dbg(v...);}
 
 #ifdef DEBUG
-#define dbg(x...) cerr << "\e[34m"<<__func__<<":"<<__LINE__<<" [" << #x << "]\e[39m = \e[32m ["; dbg(x); cerr << "\e[39m" << endl;
+#define dbg(x...) cerr << "\e[34m"<<__func__<<":"<<__LINE__<<" [" << #x << "]\e[39m = \e[32m["; dbg(x); cerr << "\e[39m" << endl;
 #else
 #define dbg(x...) 32
 #endif

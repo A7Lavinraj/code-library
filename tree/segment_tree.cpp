@@ -3,11 +3,10 @@ using namespace std;
 
 struct Segement_tree {
   // TODO: check if input overflows int.
-  const int N = 1e5;
   vector<int> tree;
 
-  Segement_tree() {
-    tree.assign(4 * N, 0);
+  Segement_tree(int N = 200200) {
+    tree.resize(4 * N);
   }
 
   void build(vector<int> &container, int node, int low, int high) {
