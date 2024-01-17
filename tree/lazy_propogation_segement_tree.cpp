@@ -43,7 +43,8 @@ struct Segement_tree {
 
     int mid = begin + (end - begin) / 2;
 
-    return query(2 * node, begin, mid, low, high) + query(2 * node + 1, mid + 1, end, low, high) + int64_t(0);
+    return query(2 * node, begin, mid, low, high) +
+           query(2 * node + 1, mid + 1, end, low, high) + int64_t(0);
   }
 
   void update(int node, int begin, int end, int low, int high, int value) {
@@ -68,12 +69,11 @@ struct Segement_tree {
         lazy[2 * node] += value;
         lazy[2 * node + 1] += value;
       }
-    }
-    else {
+    } else {
       int mid = begin + (end - begin) / 2;
 
-      update (2 * node, begin, mid, low, high, value);
-      update (2 * node + 1, mid + 1, end, low, high, value);
+      update(2 * node, begin, mid, low, high, value);
+      update(2 * node + 1, mid + 1, end, low, high, value);
 
       tree[node] = tree[2 * node] + tree[2 * node + 1];
     }

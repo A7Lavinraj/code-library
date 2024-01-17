@@ -5,9 +5,7 @@ struct Segement_tree {
   // TODO: check if input overflows int.
   vector<int> tree;
 
-  Segement_tree(int N = 200200) {
-    tree.resize(4 * N);
-  }
+  Segement_tree(int N = 200200) { tree.resize(4 * N); }
 
   void build(vector<int> &container, int node, int low, int high) {
     if (low == high)
@@ -31,7 +29,8 @@ struct Segement_tree {
 
     int mid = begin + (end - begin) / 2;
 
-    return query(2 * node, begin, mid, low, min(high, mid)) + query(2 * node + 1, mid + 1, end, max(low, mid + 1), high);
+    return query(2 * node, begin, mid, low, min(high, mid)) +
+           query(2 * node + 1, mid + 1, end, max(low, mid + 1), high);
   }
 
   void update(int node, int begin, int end, int index, int value) {
@@ -42,7 +41,7 @@ struct Segement_tree {
 
       if (index <= mid)
         update(2 * node, begin, mid, index, value);
-      else 
+      else
         update(2 * node + 1, mid + 1, end, index, value);
 
       tree[node] = tree[2 * node] + tree[2 * node + 1];

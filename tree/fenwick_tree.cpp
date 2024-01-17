@@ -6,7 +6,7 @@ struct fenwick_tree {
   int n;
 
   fenwick_tree(int n) {
-    this -> n = n;
+    this->n = n;
     tree.assign(n, 0);
   }
 
@@ -27,7 +27,7 @@ struct fenwick_tree {
   }
 
   void update(int index, int delta) {
-    while(index < n) {
+    while (index < n) {
       tree[index] += delta;
       index = index | (index + 1);
     }

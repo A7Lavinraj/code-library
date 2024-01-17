@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int64_t max_sum_with_k(vector<int64_t>& container, int64_t k) {
+int64_t max_sum_with_k(vector<int64_t> &container, int64_t k) {
   int n = (int)container.size();
   vector<int> maxsum(n);
   int currmax = container[0];

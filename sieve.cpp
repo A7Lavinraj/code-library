@@ -17,19 +17,15 @@ struct sieve {
   vector<int> primes() {
     vector<int> result;
     for (int i = 2; i <= int(prime.size()); i++) {
-      if (prime[i]) result.push_back(i);
+      if (prime[i])
+        result.push_back(i);
     }
 
     return result;
   }
 
-  bool is_prime(int n) {
-    return prime[n];
-  }
+  bool is_prime(int n) { return prime[n]; }
 
 } primes(1000);
 
-int main() {
-  return 0;
-}
-
+int main() { return 0; }
