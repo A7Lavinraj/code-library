@@ -1,11 +1,11 @@
-#include <bits/stdc++.h>
+#include <vector>
 using namespace std;
 
-struct Segement_tree {
+struct segtree {
   // TODO: check if input overflows int.
   vector<int> tree;
 
-  Segement_tree(int N = 200200) { tree.resize(4 * N); }
+  segtree(int N = 200200) { tree.resize(4 * N); }
 
   void build(vector<int> &container, int node, int low, int high) {
     if (low == high)
@@ -48,16 +48,3 @@ struct Segement_tree {
     }
   }
 };
-
-int main(void) {
-  vector<int> arr = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-  Segement_tree tree;
-
-  tree.build(arr, 1, 0, 9);
-
-  cout << tree.query(1, 0, 9, 0, 2) << '\n';
-  tree.update(1, 0, 9, 1, 10);
-  cout << tree.query(1, 0, 9, 0, 2) << '\n';
-
-  return 0;
-}

@@ -1,5 +1,21 @@
-#include <bits/stdc++.h>
+#include <vector>
+#include <climits>
+#include <cstdint>
+#include <numeric>
+#include <algorithm>
 using namespace std;
+
+int max_subarray_sum(vector<int> &arr) {
+  int max_so_far = INT_MIN, max_ending_here = 0;
+
+  for (int i = 0; i < (int)arr.size(); i++) {
+    max_ending_here = max_ending_here + arr[i];
+    max_so_far = max(max_so_far, max_ending_here);
+    max_ending_here = max(max_ending_here, 0);
+  }
+
+  return max_so_far;
+}
 
 int64_t max_sum_with_k(vector<int64_t> &container, int64_t k) {
   int n = (int)container.size();
@@ -21,10 +37,4 @@ int64_t max_sum_with_k(vector<int64_t> &container, int64_t k) {
   }
 
   return result;
-}
-
-int main() {
-  vector<int64_t> input = {1, -2, 2, -3};
-  cout << max_sum_with_k(input, 2) << "\n";
-  return 0;
 }

@@ -45,11 +45,3 @@ template <typename T = int> void vector_out(vector<T> output) {
   }
   cout << "\n";
 }
-
-int main() {
-  fenwick_tree tree({1, 2, 3, 5, 6});
-  // tree.update(0, 1, +2);
-  cout << tree.query(3) << '\n';
-
-  return 0;
-}
