@@ -36,11 +36,11 @@ struct segtree {
         lazy[2 * node + 1] = operation(lazy[2 * node + 1], lazy[node]);
       }
 
-      lazy[node] = 0;
+      lazy[node] = 1;
     }
 
     if (end < low || begin > high)
-      return 0;
+      return 1;
 
     if ((low <= begin) && (end <= high))
       return tree[node];
@@ -59,7 +59,7 @@ struct segtree {
         lazy[2 * node + 1] = operation(lazy[2 * node + 1], lazy[node]);
       }
 
-      lazy[node] = 0;
+      lazy[node] = 1;
     }
 
     if ((end < low) || (begin > high))

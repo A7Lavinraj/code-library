@@ -1,4 +1,4 @@
-template <typename T> bool isPalindrome(T conatiner) {
+template <typename T> bool is_palindrome(T conatiner) {
   int low = 0, high = conatiner.size() - 1;
 
   while (low < high) {
