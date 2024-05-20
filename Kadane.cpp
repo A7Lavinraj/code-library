@@ -1,8 +1,8 @@
-#include <vector>
+#include <algorithm>
 #include <climits>
 #include <cstdint>
 #include <numeric>
-#include <algorithm>
+#include <vector>
 using namespace std;
 
 int max_subarray_sum(vector<int> &arr) {

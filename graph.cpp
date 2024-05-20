@@ -1,5 +1,5 @@
-#include <vector>
 #include <set>
+#include <vector>
 using namespace std;
 
 struct Graph {
@@ -12,9 +12,7 @@ struct Graph {
     dist.resize(size, INF);
   }
 
-  void add_edge(int u, int v, int w) {
-    edges[u].push_back(make_pair(w, v));
-  }
+  void add_edge(int u, int v, int w) { edges[u].push_back(make_pair(w, v)); }
 
   void dijkstra(int src) {
     set<pair<int, int>> queue;

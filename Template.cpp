@@ -1,9 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-void testcase() {
-  ;
-}
+void testcase() { ; }
 
 int main() {
   ios_base::sync_with_stdio(false);
