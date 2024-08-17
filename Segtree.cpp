@@ -1,51 +1,56 @@
+#include <cstdint>
 #include <vector>
 using namespace std;
 
 struct segtree {
-  vector<int> tree; // NOTE: check for overflows
+  vector<int64_t> tree;
 
-  segtree(int N = 200200) { tree.resize(4 * N); }
+  segtree(int64_t N = int64_t(200200)) { tree.resize(int64_t(4) * N); }
 
-  int op(int a, int b) { return a * b; }
+  int64_t operation(int64_t a, int64_t b) { return a + b; }
 
-  void build(vector<int> &container, int node, int low, int high) {
+  void build(vector<int64_t> &container, int64_t node, int64_t low,
+             int64_t high) {
     if (low == high)
       tree[node] = container[low];
     else {
-      int mid = low + (high - low) / 2;
+      int64_t mid = low + (high - low) / 2;
 
       build(container, 2 * node, low, mid);
       build(container, 2 * node + 1, mid + 1, high);
 
-      tree[node] = op(tree[2 * node], tree[2 * node + 1]);
+      tree[node] = operation(tree[2 * node], tree[2 * node + 1]);
     }
   }
 
-  int query(int node, int begin, int end, int low, int high) {
+  int64_t query(int64_t node, int64_t begin, int64_t end, int64_t low,
+                int64_t high) {
     if (low > high)
-      return 1;
+      return 0;
 
     if (low == begin && high == end)
       return tree[node];
 
-    int mid = begin + (end - begin) / 2;
+    int64_t mid = begin + (end - begin) / 2;
 
-    return op(query(2 * node, begin, mid, low, min(high, mid)),
-              query(2 * node + 1, mid + 1, end, max(low, mid + 1), high));
+    return operation(
+        query(2 * node, begin, mid, low, min(high, mid)),
+        query(2 * node + 1, mid + 1, end, max(low, mid + 1), high));
   }
 
-  void update(int node, int begin, int end, int index, int value) {
+  void update(int64_t node, int64_t begin, int64_t end, int64_t index,
+              int64_t value) {
     if (begin == end)
       tree[node] = value;
     else {
-      int mid = begin + (end - begin) / 2;
+      int64_t mid = begin + (end - begin) / 2;
 
       if (index <= mid)
         update(2 * node, begin, mid, index, value);
       else
         update(2 * node + 1, mid + 1, end, index, value);
 
-      tree[node] = op(tree[2 * node], tree[2 * node + 1]);
+      tree[node] = operation(tree[2 * node], tree[2 * node + 1]);
     }
   }
 };

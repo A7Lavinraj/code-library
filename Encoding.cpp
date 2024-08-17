@@ -3,8 +3,7 @@
 
 using namespace std;
 
-template <typename T, typename T_iterable>
-vector<pair<T, int>> run_length_encoding(T_iterable &items) {
+template <typename T, typename T_iterable> vector<pair<T, int>> run_length_encoding(T_iterable &items) {
   vector<pair<T, int>> encoding;
   T character = items[0];
   int count = 0;
