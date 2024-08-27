@@ -1,8 +1,7 @@
-#include <bits/stdc++.h>
-using namespace std;
+#include <vector>
 
 struct fenwick_tree {
-  vector<int> tree;
+  std::vector<int> tree;
   int n;
 
   fenwick_tree(int n) {
@@ -10,7 +9,7 @@ struct fenwick_tree {
     tree.assign(n, 0);
   }
 
-  fenwick_tree(vector<int> const &a) : fenwick_tree(a.size()) {
+  fenwick_tree(std::vector<int> const &a) : fenwick_tree(a.size()) {
     for (size_t i = 0; i < a.size(); i++)
       update(i, a[i]);
   }
@@ -38,10 +37,3 @@ struct fenwick_tree {
     update(high + 1, -delta);
   }
 };
-
-template <typename T = int> void vector_out(vector<T> output) {
-  for (T iterator : output) {
-    cout << iterator << " ";
-  }
-  cout << "\n";
-}

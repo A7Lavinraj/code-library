@@ -1,9 +1,8 @@
 #include <cstdint>
 #include <vector>
-using namespace std;
 
 struct segtree {
-  vector<int> tree, lazy;
+  std::vector<int> tree, lazy;
 
   segtree(int N = 200200) {
     tree.resize(4 * N);
@@ -12,7 +11,7 @@ struct segtree {
 
   int operation(int a, int b) { return a * b; }
 
-  void build(vector<int> &container, int node, int begin, int end) {
+  void build(std::vector<int> &container, int node, int begin, int end) {
     if (begin == end)
       tree[node] = container[begin];
     else {
@@ -45,8 +44,7 @@ struct segtree {
 
     int mid = begin + (end - begin) / 2;
 
-    return operation(query(2 * node, begin, mid, low, high),
-                     query(2 * node + 1, mid + 1, end, low, high) + int64_t(0));
+    return operation(query(2 * node, begin, mid, low, high), query(2 * node + 1, mid + 1, end, low, high) + int64_t(0));
   }
 
   void update(int node, int begin, int end, int low, int high, int value) {

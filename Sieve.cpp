@@ -1,9 +1,8 @@
 #include <vector>
-using namespace std;
 
 const int N = int(100);
-vector<bool> is_prime;
-vector<int> primes;
+std::vector<bool> is_prime;
+std::vector<int> primes;
 
 void sieve() {
   is_prime.assign(N + 1, true);

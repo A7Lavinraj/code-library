@@ -1,10 +1,7 @@
-#include <iostream>
 #include <vector>
 
-using namespace std;
-
-template <typename T, typename T_iterable> vector<pair<T, int>> run_length_encoding(T_iterable &items) {
-  vector<pair<T, int>> encoding;
+template <typename T, typename T_iterable> std::vector<std::pair<T, int>> run_length_encoding(T_iterable &items) {
+  std::vector<std::pair<T, int>> encoding;
   T character = items[0];
   int count = 0;
 
@@ -21,14 +18,4 @@ template <typename T, typename T_iterable> vector<pair<T, int>> run_length_encod
   encoding.emplace_back(character, count);
 
   return encoding;
-}
-
-int main() {
-  string s = "aadddkkklljj";
-  auto encoding = run_length_encoding<char>(s);
-
-  for (auto &x : encoding)
-    cout << x.first << ": " << x.second << '\n';
-
-  return 0;
 }

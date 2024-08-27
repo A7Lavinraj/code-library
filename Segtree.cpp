@@ -1,15 +1,14 @@
 #include <cstdint>
 #include <vector>
-using namespace std;
 
 struct segtree {
-  vector<int64_t> tree;
+  std::vector<int64_t> tree;
 
   segtree(int64_t N = int64_t(200200)) { tree.resize(int64_t(4) * N); }
 
   int64_t operation(int64_t a, int64_t b) { return a + b; }
 
-  void build(vector<int64_t> &container, int64_t node, int64_t low,
+  void build(std::vector<int64_t> &container, int64_t node, int64_t low,
              int64_t high) {
     if (low == high)
       tree[node] = container[low];
@@ -34,8 +33,8 @@ struct segtree {
     int64_t mid = begin + (end - begin) / 2;
 
     return operation(
-        query(2 * node, begin, mid, low, min(high, mid)),
-        query(2 * node + 1, mid + 1, end, max(low, mid + 1), high));
+        query(2 * node, begin, mid, low, std::min(high, mid)),
+        query(2 * node + 1, mid + 1, end, std::max(low, mid + 1), high));
   }
 
   void update(int64_t node, int64_t begin, int64_t end, int64_t index,

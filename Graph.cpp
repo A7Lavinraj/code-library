@@ -1,29 +1,28 @@
 #include <set>
 #include <vector>
-using namespace std;
 
 struct Graph {
   const int INF = int(1e9); // NOTE: set INF for your convenience
-  vector<vector<pair<int, int>>> edges;
-  vector<int> dist;
+  std::vector<std::vector<std::pair<int, int>>> edges;
+  std::vector<int> dist;
 
   Graph(int size) {
     edges.resize(size);
     dist.resize(size, INF);
   }
 
-  void add_edge(int u, int v, int w) { edges[u].push_back(make_pair(w, v)); }
+  void add_edge(int u, int v, int w) { edges[u].push_back(std::make_pair(w, v)); }
 
   void dijkstra(int src) {
-    set<pair<int, int>> queue;
-    queue.insert(make_pair(0, src));
+    std::set<std::pair<int, int>> queue;
+    queue.insert(std::make_pair(0, src));
     dist[src] = 0;
 
     while (!queue.empty()) {
-      pair<int, int> node = *queue.begin();
+      std::pair<int, int> node = *queue.begin();
       queue.erase(queue.begin());
 
-      for (pair<int, int> child : edges[node.second]) {
+      for (std::pair<int, int> child : edges[node.second]) {
         int distance = dist[node.second] + child.first;
 
         if (distance < dist[child.second]) {
