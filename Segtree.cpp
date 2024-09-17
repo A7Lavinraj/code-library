@@ -1,55 +1,74 @@
-#include <cstdint>
+#include <climits>
+#include <functional>
+#include <iostream>
 #include <vector>
 
-struct segtree {
-  std::vector<int64_t> tree;
+template <typename T> struct segment_tree {
+public:
+  segment_tree(std::vector<T> &data, T identity,
+               std::function<T(T, T)> operation) {
+    N = data.size();
+    tree.resize(N * 4);
+    this->identity = identity;
+    this->operation = operation;
+    build(data, 0, 0, N - 1);
+  }
 
-  segtree(int64_t N = int64_t(200200)) { tree.resize(int64_t(4) * N); }
+  T query(int L, int R) { return _query(0, 0, N - 1, L, R); }
 
-  int64_t operation(int64_t a, int64_t b) { return a + b; }
+  void update(int index, T updated_value) {
+    _update(0, 0, N - 1, index, updated_value);
+  }
 
-  void build(std::vector<int64_t> &container, int64_t node, int64_t low,
-             int64_t high) {
-    if (low == high)
-      tree[node] = container[low];
-    else {
-      int64_t mid = low + (high - low) / 2;
+private:
+  int N;
+  T identity;
+  std::vector<T> tree;
+  std::function<T(T, T)> operation;
 
-      build(container, 2 * node, low, mid);
-      build(container, 2 * node + 1, mid + 1, high);
-
-      tree[node] = operation(tree[2 * node], tree[2 * node + 1]);
+  void build(std::vector<T> &data, int node, int begin, int end) {
+    if (begin == end) {
+      tree[node] = data[begin];
+    } else {
+      int mid = begin + (end - begin) / 2;
+      build(data, 2 * node + 1, begin, mid);
+      build(data, 2 * node + 2, mid + 1, end);
+      tree[node] = operation(tree[2 * node + 1], tree[2 * node + 2]);
     }
   }
 
-  int64_t query(int64_t node, int64_t begin, int64_t end, int64_t low,
-                int64_t high) {
-    if (low > high)
-      return 0;
+  T _query(int node, int begin, int end, int L, int R) {
+    if (R < begin || L > end)
+      return identity;
 
-    if (low == begin && high == end)
+    if (L <= begin && end <= R)
       return tree[node];
 
-    int64_t mid = begin + (end - begin) / 2;
-
-    return operation(
-        query(2 * node, begin, mid, low, std::min(high, mid)),
-        query(2 * node + 1, mid + 1, end, std::max(low, mid + 1), high));
+    int mid = begin + (end - begin) / 2;
+    T sub_L = _query(2 * node + 1, begin, mid, L, R);
+    T sub_R = _query(2 * node + 2, mid + 1, end, L, R);
+    return operation(sub_L, sub_R);
   }
 
-  void update(int64_t node, int64_t begin, int64_t end, int64_t index,
-              int64_t value) {
-    if (begin == end)
-      tree[node] = value;
-    else {
-      int64_t mid = begin + (end - begin) / 2;
+  void _update(int node, int begin, int end, int index, T updated_value) {
+    if (begin == end) {
+      tree[node] = updated_value;
+    } else {
+      int mid = begin + (end - begin) / 2;
 
       if (index <= mid)
-        update(2 * node, begin, mid, index, value);
+        _update(2 * node + 1, begin, mid, index, updated_value);
       else
-        update(2 * node + 1, mid + 1, end, index, value);
+        _update(2 * node + 2, mid + 1, end, index, updated_value);
 
-      tree[node] = operation(tree[2 * node], tree[2 * node + 1]);
+      tree[node] = operation(tree[2 * node + 1], tree[2 * node + 2]);
     }
   }
 };
+
+int main() {
+  std::vector<int> v = {1, 2, 3, 4, 5};
+  segment_tree<int> tree(v, 0, [](int a, int b) { return a + b; });
+  std::cout << tree.query(0, 3) << '\n';
+  return 0;
+}
