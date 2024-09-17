@@ -1,81 +1,117 @@
-#include <cstdint>
+#include <climits>
+#include <functional>
+#include <iostream>
 #include <vector>
 
-struct segtree {
-  std::vector<int> tree, lazy;
-
-  segtree(int N = 200200) {
-    tree.resize(4 * N);
-    lazy.resize(4 * N);
+template <typename T> struct segment_tree {
+public:
+  segment_tree(std::vector<T> &data) {
+    N = data.size();
+    tree.resize(N * 4);
+    lazy.resize(N * 4, 0);
+    identity = 0;
+    operation = [](T a, T b) -> T { return a + b; };
+    apply_update = [](T a, T b, int len) -> T { return a + b * len; };
+    build(data, 0, 0, N - 1);
   }
 
-  int operation(int a, int b) { return a * b; }
+  segment_tree(std::vector<T> &data, T identity,
+               std::function<T(T, T)> operation,
+               std::function<T(T, T, int)> apply_update) {
+    N = data.size();
+    tree.resize(N * 4);
+    lazy.resize(N * 4, identity);
+    this->identity = identity;
+    this->operation = operation;
+    this->apply_update = apply_update;
+    build(data, 0, 0, N - 1);
+  }
 
-  void build(std::vector<int> &container, int node, int begin, int end) {
-    if (begin == end)
-      tree[node] = container[begin];
-    else {
+  T query(int L, int R) { return _query(0, 0, N - 1, L, R); }
+
+  void update(int L, int R, T update_value) {
+    _update(0, 0, N - 1, L, R, update_value);
+  }
+
+private:
+  int N;
+  T identity;
+  std::vector<T> tree, lazy;
+  std::function<T(T, T)> operation;
+  std::function<T(T, T, int)> apply_update;
+
+  void build(std::vector<T> &data, int node, int begin, int end) {
+    if (begin == end) {
+      tree[node] = data[begin];
+    } else {
       int mid = begin + (end - begin) / 2;
-
-      build(container, 2 * node, begin, mid);
-      build(container, 2 * node + 1, mid + 1, end);
-
-      tree[node] = operation(tree[2 * node], tree[2 * node + 1]);
+      build(data, 2 * node + 1, begin, mid);
+      build(data, 2 * node + 2, mid + 1, end);
+      tree[node] = operation(tree[2 * node + 1], tree[2 * node + 2]);
     }
   }
 
-  int64_t query(int node, int begin, int end, int low, int high) {
-    if (lazy[node] != 0) {
-      tree[node] = operation(tree[node], (end - begin + 1) * lazy[node]);
+  void propagate(int node, int begin, int end) {
+    if (lazy[node] != identity) {
+      tree[node] = apply_update(tree[node], lazy[node], end - begin + 1);
 
       if (begin != end) {
-        lazy[2 * node] = operation(lazy[2 * node], lazy[node]);
         lazy[2 * node + 1] = operation(lazy[2 * node + 1], lazy[node]);
+        lazy[2 * node + 2] = operation(lazy[2 * node + 2], lazy[node]);
       }
 
-      lazy[node] = 1;
+      lazy[node] = identity;
     }
+  }
 
-    if (end < low || begin > high)
-      return 1;
+  T _query(int node, int begin, int end, int L, int R) {
+    propagate(node, begin, end);
 
-    if ((low <= begin) && (end <= high))
+    if (R < begin || L > end)
+      return identity;
+
+    if (L <= begin && end <= R)
       return tree[node];
 
     int mid = begin + (end - begin) / 2;
-
-    return operation(query(2 * node, begin, mid, low, high), query(2 * node + 1, mid + 1, end, low, high) + int64_t(0));
+    T sub_L = _query(2 * node + 1, begin, mid, L, R);
+    T sub_R = _query(2 * node + 2, mid + 1, end, L, R);
+    return operation(sub_L, sub_R);
   }
 
-  void update(int node, int begin, int end, int low, int high, int value) {
-    if (lazy[node] != 0) {
-      tree[node] = operation(tree[node], (end - begin + 1) * lazy[node]);
+  void _update(int node, int begin, int end, int L, int R, T update_value) {
+    propagate(node, begin, end);
 
-      if (begin != end) {
-        lazy[2 * node] = operation(lazy[2 * node], lazy[node]);
-        lazy[2 * node + 1] = operation(lazy[2 * node + 1], lazy[node]);
-      }
-
-      lazy[node] = 1;
-    }
-
-    if ((end < low) || (begin > high))
+    if (R < begin || L > end)
       return;
 
-    if (begin >= low && end <= high) {
-      tree[node] = operation(tree[node], (end - begin + 1) * value);
+    if (L <= begin && end <= R) {
+      tree[node] = apply_update(tree[node], update_value, end - begin + 1);
 
       if (begin != end) {
-        lazy[2 * node] = operation(lazy[2 * node], value);
-        lazy[2 * node + 1] = operation(lazy[2 * node + 1], value);
+        lazy[2 * node + 1] = operation(lazy[2 * node + 1], update_value);
+        lazy[2 * node + 2] = operation(lazy[2 * node + 2], update_value);
       }
-    } else {
-      int mid = begin + (end - begin) / 2;
 
-      update(2 * node, begin, mid, low, high, value);
-      update(2 * node + 1, mid + 1, end, low, high, value);
-
-      tree[node] = operation(tree[2 * node], tree[2 * node + 1]);
+      return;
     }
+
+    int mid = begin + (end - begin) / 2;
+    _update(2 * node + 1, begin, mid, L, R, update_value);
+    _update(2 * node + 2, mid + 1, end, L, R, update_value);
+    tree[node] = operation(tree[2 * node + 1], tree[2 * node + 2]);
   }
 };
+
+int main() {
+  std::vector<int> v = {1, 2, 3, 4, 5};
+
+  segment_tree tree(v);
+
+  std::cout << tree.query(0, 4) << '\n';
+
+  tree.update(1, 3, 1);
+  std::cout << tree.query(0, 4) << '\n';
+
+  return 0;
+}
