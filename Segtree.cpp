@@ -6,15 +6,14 @@
 template <typename T> struct segment_tree {
 public:
   segment_tree(std::vector<T> &data) {
-    int N = data.size();
+    N = data.size();
     tree.resize(N * 4);
     identity = 0;
     operation = [](T a, T b) { return a + b; };
     build(data, 0, 0, N - 1);
   }
 
-  segment_tree(std::vector<T> &data, T identity,
-               std::function<T(T, T)> operation) {
+  segment_tree(std::vector<T> &data, T identity, std::function<T(T, T)> operation) {
     N = data.size();
     tree.resize(N * 4);
     this->identity = identity;
